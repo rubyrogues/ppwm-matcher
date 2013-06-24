@@ -99,7 +99,7 @@ module PpwmMatcher
     end
 
     get '/code' do
-      user = User.current(github_user) # TODO: refactor to helper method ?
+      user = User.current(github_user.login) # TODO: refactor to helper method ?
       redirect '/' unless user && user.code
 
       @pair = user.pair
@@ -136,7 +136,7 @@ module PpwmMatcher
       @email = params['email'] || github_user.email
       @name = github_user.name || github_user.login
 
-      user = User.current(github_user)
+      user = User.current(github_user.login)
       if user && user.has_code?
         @has_code = true
       end

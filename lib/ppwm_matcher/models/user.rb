@@ -21,8 +21,8 @@ module PpwmMatcher
       User.where(:code_id => self.code_id).detect{|u| u != self }
     end
 
-    def self.current(github_user)
-      where(:github_login => github_user.login).limit(1).first
+    def self.current(github_login)
+      where(:github_login => github_login).limit(1).first
     end
 
     def self.update_or_create(email, github_user)
