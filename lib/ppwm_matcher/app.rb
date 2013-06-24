@@ -98,6 +98,16 @@ module PpwmMatcher
       end
     end
 
+    get '/profile/:github_login' do
+      # TODO revisit how to ensure we get a safe string
+      github_login = params[:github_login].to_s.gsub(/[\s-\/\\\.]/, '')
+      user = User.current(github_login)
+      if user
+        "Hello #{github_login}"
+      else
+        "No such user"
+      end
+    end
     get '/code' do
       user = User.current(github_user.login) # TODO: refactor to helper method ?
       redirect '/' unless user && user.code
