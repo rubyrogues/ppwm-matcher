@@ -32,10 +32,13 @@ describe PpwmMatcher::App do
       it 'if the user exists, says Hello github_login' do
         login_as github_user
 
-        PpwmMatcher::User.update_or_create('foo@example.com', github_user)
-        get "/profile/#{github_user.login}"
+        user = PpwmMatcher::User.update_or_create('foo@example.com', github_user)
+        get "/profile/#{user.github_login}"
 
-        expect(last_response.body).to include("Hello #{github_user.login}")
+        [:github_login, :name, :email, :gravatar_id].each do |profile_attribute|
+          expect(last_response.body).to include(user.public_send(profile_attribute))
+        end
+
       end
       it 'if user does not exists,says No such user' do
         login_as github_user
