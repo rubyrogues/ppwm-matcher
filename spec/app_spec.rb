@@ -27,6 +27,26 @@ describe PpwmMatcher::App do
     end
   end
 
+  describe "GET /profile/:github_login" do
+    context 'the user is authorized' do
+      it 'if the user exists, says Hello github_login' do
+        login_as github_user
+
+        PpwmMatcher::User.update_or_create('foo@example.com', github_user)
+        get "/profile/#{github_user.login}"
+
+        expect(last_response.body).to include("Hello #{github_user.login}")
+      end
+      it 'if user does not exists,says No such user' do
+        login_as github_user
+
+        get "/profile/#{github_user.login}"
+
+        expect(last_response.body).to include('No such user')
+      end
+    end
+  end
+
   describe "GET /unauthenticated" do
     it "should not redirect for authentication" do
       get '/unauthenticated'
