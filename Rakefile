@@ -1,11 +1,15 @@
 require './app'
 require 'sinatra/activerecord/rake'
 
-require 'rspec/core/rake_task'
+begin
+  require 'rspec/core/rake_task'
 
-RSpec::Core::RakeTask.new(:spec)
+  RSpec::Core::RakeTask.new(:spec)
 
-task :default => :spec
+  task :default => :spec
+rescue LoadError
+  puts "We don't have rspec"
+end
 
 namespace :db do
   desc "Populate the database with example data"
