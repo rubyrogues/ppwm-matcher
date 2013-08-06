@@ -18,7 +18,8 @@ module PpwmMatcher
     end
 
     def assign_user(user)
-      users << user
+      users << user 
+			users.uniq!
       notify_observers :users_assigned, users
     end
 
