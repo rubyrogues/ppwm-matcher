@@ -80,6 +80,11 @@ describe PpwmMatcher::Code do
         observer.should_receive(:users_assigned).with([user1, user2])
         code.assign_user(user2)
       end
+
+      it "should not pass duplicate user to observer" do
+        observer.should_receive(:users_assigned).with([user1])
+        code.assign_user(user1)
+      end
     end
   end
 
